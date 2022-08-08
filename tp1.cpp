@@ -110,16 +110,14 @@ int main(){
     // Esto ordena la matriz de datos primero por cliente y luego por tipo de producto, haciendo que sea mucho más sencillo 
     // visualizar la información
 
-    cout << "__________PARTE 1__________" << endl;
+    cout << "Listado por clientes, de los tipos de productos que superen los 13000 Kg acumulados:" << endl;
 
     float pesoprod;
     string product;
-
+    bool tieneprods;
     for (int client ; client < 8 ; client ++){ // bucle de cada cliente
-        cout << endl;
-        cout << "Entregas del cliente: " << nombres[client] << endl;
-        cout << endl;
-
+        // si tiene al menos un producto con entregas mayores a los 13000 kg:
+        tieneprods = true;
         for (int prod = 0; prod < 5 ; prod++){ // bucle de cada producto
             pesoprod = 0;
             for (int i = 0; i < indxf + 1 ; i++){ // se lee linea a linea la matriz 
@@ -132,19 +130,23 @@ int main(){
                 
             }
 
-            if (pesoprod > 13000){
-                cout << "       Peso de productos " << product << " transportados: " << pesoprod << " kg."<< endl;
+            if (pesoprod > 13000){ // el nombre del cliente se imprime desde acá y no arriba, ya que solo importan los clientes que superan
+                if (tieneprods == true){ // los 13000kg en sus entregas
+                    cout << nombres[client] << ": ";
+                }
+                else{
+                    cout << ", ";
+                }
+                tieneprods = false;
+                //cout << "       Peso de productos " << product << " transportados: " << pesoprod << " kg."<< endl;
+                cout << product;
             }
             
 
         }
 
-
+        cout << endl;
     }
-    
-    cout << "__________PARTE 1__________" << endl;
-
-
 
    //__________PARTE 1__________
 
@@ -155,7 +157,8 @@ int main(){
      ordenado por total de kilómetros en forma ascendente.
     Nota: No alterar el vector de nombres.*/
 
-
+  // PD: ¿qué pasaría en el caso de que dos o más clientes estén empatados en la cantidad de tipos de producto superior a los 13000 kg?
+  // lo lógico sería intentar "desempatarlos" de alguna forma, pero sin embargo es difícil encontrar un criterio correcto para hacerlo.
 
 
 
