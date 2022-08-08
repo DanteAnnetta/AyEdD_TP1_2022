@@ -178,14 +178,7 @@ int main(){
   // PD: ¿qué pasaría en el caso de que dos o más clientes estén empatados en la cantidad de tipos de producto superior a los 13000 kg?
   // lo lógico sería intentar "desempatarlos" de alguna forma, pero sin embargo es difícil encontrar un criterio correcto para hacerlo.
 
-  // para saber cual es el cliente con mas cantidad de productos, se armará un arreglo de dos valores enteros: el código del cliente 
-  // y la cantidad de productos. Este último se irá comparando cliente a cliente (al final) y reemplazandose en caso de encontrar a un cliente 
-  // que tenga más cantidad de productos. Para poder hacerlo, al algoritmo anterior se le agregará un contador de productos y algunos condicionales
-
-
-  // prueba de que funcionan las features agregadas a la parte 1:
-
-    //cout << results[0] << " " << results[1] << endl;
+    cout << endl;
     cout << "Listado de Km recorridos por tipo de producto (ascendente):" << endl;
 
     //la matriz dist funciona correctamente (abajo código que la prueba)
@@ -194,32 +187,61 @@ int main(){
         cout << dist[1][i] << endl;
     }
     */
-    // nuevamente, se puede aprovechar el código de la parte 1: el recorrido de la matriz de datos se da en el formato producto a producto 
-    // de cada cliente, por lo que se puede armar una nueva matriz en la que las filas correspondan a los clientes y las columnas a las distancias
+    // nuevamente, se puede aprovechar el código de la parte 1: el recorrido de la matriz de datos se da en el formato producto a producto,
+    // cliente a cliente, por lo que se puede armar una nueva matriz en la que las filas correspondan a los clientes y las columnas a las distancias
     // que se recorren en las entregas de cada producto, haciendo que en esta sección se encargue de parsear la fila indicada por results[0]
 
-    // para esta parte 2, una vez teniendo la matriz de distancias, hay que ordenar los valores de forma ascendiente, de modo que 
-    // obtener el codigo de producto que necesita la parte 3 es relativamente sencillo, basta con comparar dicho valor con la fila correspondiente
-    // de la matriz y salir cuando se obtenga el mismo valor. (eso suponiendo que no habrá distancias iguales)
+    // para esta parte 2, una vez teniendo la matriz de distancias, hay que ordenar los valores de forma ascendiente
     
-
+    
+    // una vez deducido que cliente es el que tiene más cantidad de "grandes entregas", se buscaran únicamente sus datos en la matriz de datos
 
     float maskm = 0;
     int cod; // el codigo del producto que tiene más km recorridos
 
+
     for (int i = 0 ; i < 5 ; i++){
-       // cod = 0;
-       
         if (dist[results[0]][i] > maskm){
             maskm = dist[results[0]][i];
             cod = i;
         }
     }
 
-    cout << maskm << " " << cod << endl;
 
 
-  // una vez deducido que cliente es el que tiene más cantidad de "grandes entregas", se buscaran únicamente sus datos en la matriz de datos
+    // se ordena la columna correspondiente al cliente con los datos de menor a mayor.(algoritmo burbuja)
+    // aprovechando este algoritmo, se ordena un arreglo con los codigos de producto de la misma forma que dicha columna, de modo tal que 
+    // cuando se impriman por consola los datos, siga existiendo un indicador de que producto se trata
+
+    int ind[5];
+
+    for (int i = 0; i < 5 ; i++){
+        ind[i] = i;
+    }
+
+    // este algoritmo funciona casi bien: los códigos de cada producto son correctos, pero el ordenamiento confunde dos posiciones
+    float aux;
+    int indaux;
+    for (int i = 0; i < 5 ; i++){
+        if(dist[results[0]][i] > dist[results[0]][i + 1]){
+            aux = dist[results[0]][i];
+            indaux = ind[i];
+            ind[i] = ind[i + 1];
+            ind[i + 1] = indaux;
+            dist[results[0]][i] = dist[results[0]][i + 1];
+            dist[results[0]][i + 1] = aux;
+
+        }
+    }
+
+
+    for (int i = 0 ; i < 5 ; i++){
+        cout << nombres[ind[i] + 8] << ": " << dist[results[0]][i] << endl;
+    }
+
+
+
+ 
 
 
    //__________PARTE 2__________
@@ -230,11 +252,14 @@ int main(){
     
      // este codigo funciona perfecto, si el resultado es erróneo, el bug está en la obtención de la variable cod
     int n = 0;
+    
     for (int i = 0; i < indxf + 1 ; i++){
         if (data[i][1] == cod){ // si el codigo de producto es igual al obtenido anteriormente se suma una entrega a la cantidad total
             n++;
         }
     }
+
+    cout << endl;
     cout << "Cantidad de entregas para el tipo de producto " << nombres[cod + 8 ] << ": " << n << endl;
    //__________PARTE 3__________
     return 0;
