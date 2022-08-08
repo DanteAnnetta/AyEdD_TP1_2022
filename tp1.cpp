@@ -117,6 +117,8 @@ int main(){
     bool tieneprods;
     int nprods;
     int results[] {0 , 0};
+    float dist[8][5]; // (parte 2): en esta matriz se almacenarán los datos de la distancia de cada producto para cada cliente
+    float ndis;
 
     for (int client ; client < 8 ; client ++){ // bucle de cada cliente
         // si tiene al menos un producto con entregas mayores a los 13000 kg:
@@ -126,15 +128,19 @@ int main(){
 
         for (int prod = 0; prod < 5 ; prod++){ // bucle de cada producto
             pesoprod = 0;
+            ndis = 0;
             for (int i = 0; i < indxf + 1 ; i++){ // se lee linea a linea la matriz 
 
                 if (client == data[i][0] && prod == data[i][1]){ // para que muestre una linea de data tiene que corresponder a un cliente  pero tambien tiene que corresponder a un producto
                     pesoprod = pesoprod + data[i][2];
+                    ndis = ndis + data[i][3];
                     //cout<< "    -" << nombres[ data[i][1] + 8  ]<< "       Peso[kg]: " << data[i][2]<< "       Distancia[km]: " << data[i][3] << endl;
                     product = nombres[ data[i][1] + 8  ];
                 }
                 
             }
+
+            dist[client][prod] = ndis; // (parte 2): se le asigna el valor de la distancia a la matriz de acuerdo al cliente y al producto
 
             if (pesoprod > 13000){ // el nombre del cliente se imprime desde acá y no arriba, ya que solo importan los clientes que superan
                 if (tieneprods == true){ // los 13000kg en sus entregas
@@ -179,7 +185,39 @@ int main(){
 
   // prueba de que funcionan las features agregadas a la parte 1:
 
-    cout << results[0] << " " << results[1] << endl;
+    //cout << results[0] << " " << results[1] << endl;
+    cout << "Listado de Km recorridos por tipo de producto (ascendente):" << endl;
+
+    //la matriz dist funciona correctamente (abajo código que la prueba)
+    /*
+    for (int i = 0 ; i < 5 ; i++){
+        cout << dist[1][i] << endl;
+    }
+    */
+    // nuevamente, se puede aprovechar el código de la parte 1: el recorrido de la matriz de datos se da en el formato producto a producto 
+    // de cada cliente, por lo que se puede armar una nueva matriz en la que las filas correspondan a los clientes y las columnas a las distancias
+    // que se recorren en las entregas de cada producto, haciendo que en esta sección se encargue de parsear la fila indicada por results[0]
+
+    // para esta parte 2, una vez teniendo la matriz de distancias, hay que ordenar los valores de forma ascendiente, de modo que 
+    // obtener el codigo de producto que necesita la parte 3 es relativamente sencillo, basta con comparar dicho valor con la fila correspondiente
+    // de la matriz y salir cuando se obtenga el mismo valor. (eso suponiendo que no habrá distancias iguales)
+    
+
+
+    float maskm = 0;
+    int cod; // el codigo del producto que tiene más km recorridos
+
+    for (int i = 0 ; i < 5 ; i++){
+       // cod = 0;
+       
+        if (dist[results[0]][i] > maskm){
+            maskm = dist[results[0]][i];
+            cod = i;
+        }
+    }
+
+    cout << maskm << " " << cod << endl;
+
 
   // una vez deducido que cliente es el que tiene más cantidad de "grandes entregas", se buscaran únicamente sus datos en la matriz de datos
 
@@ -189,8 +227,15 @@ int main(){
    //__________PARTE 3__________
    /*Consigna: Del listado anterior, tome el tipo de producto con mayor cantidad de kilómetros recorridos e 
      informe cuantas entregas se hicieron para ese tipo de producto (sin importar para que cliente).*/
-
-
+    
+     // este codigo funciona perfecto, si el resultado es erróneo, el bug está en la obtención de la variable cod
+    int n = 0;
+    for (int i = 0; i < indxf + 1 ; i++){
+        if (data[i][1] == cod){ // si el codigo de producto es igual al obtenido anteriormente se suma una entrega a la cantidad total
+            n++;
+        }
+    }
+    cout << "Cantidad de entregas para el tipo de producto " << nombres[cod + 8 ] << ": " << n << endl;
    //__________PARTE 3__________
     return 0;
 }
