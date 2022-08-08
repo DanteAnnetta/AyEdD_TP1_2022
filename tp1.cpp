@@ -115,9 +115,15 @@ int main(){
     float pesoprod;
     string product;
     bool tieneprods;
+    int nprods;
+    int results[] {0 , 0};
+
     for (int client ; client < 8 ; client ++){ // bucle de cada cliente
         // si tiene al menos un producto con entregas mayores a los 13000 kg:
         tieneprods = true;
+
+        nprods = 0; // (parte 2): se pone en 0 el contador de productos
+
         for (int prod = 0; prod < 5 ; prod++){ // bucle de cada producto
             pesoprod = 0;
             for (int i = 0; i < indxf + 1 ; i++){ // se lee linea a linea la matriz 
@@ -133,6 +139,7 @@ int main(){
             if (pesoprod > 13000){ // el nombre del cliente se imprime desde acá y no arriba, ya que solo importan los clientes que superan
                 if (tieneprods == true){ // los 13000kg en sus entregas
                     cout << nombres[client] << ": ";
+                    
                 }
                 else{
                     cout << ", ";
@@ -140,11 +147,16 @@ int main(){
                 tieneprods = false;
                 //cout << "       Peso de productos " << product << " transportados: " << pesoprod << " kg."<< endl;
                 cout << product;
+                nprods ++; // (parte 2): se cuenta la cantidad de productos de cada cliente
             }
             
 
         }
-
+        if (nprods > results[1]){
+            results[0] = client; // (parte 2): el numero de cliente es el primer valor de la array
+            results[1] = nprods; // (parte 2): cuando se cambia de cliente se termina de armar la array
+        }
+        
         cout << endl;
     }
 
@@ -160,7 +172,16 @@ int main(){
   // PD: ¿qué pasaría en el caso de que dos o más clientes estén empatados en la cantidad de tipos de producto superior a los 13000 kg?
   // lo lógico sería intentar "desempatarlos" de alguna forma, pero sin embargo es difícil encontrar un criterio correcto para hacerlo.
 
+  // para saber cual es el cliente con mas cantidad de productos, se armará un arreglo de dos valores enteros: el código del cliente 
+  // y la cantidad de productos. Este último se irá comparando cliente a cliente (al final) y reemplazandose en caso de encontrar a un cliente 
+  // que tenga más cantidad de productos. Para poder hacerlo, al algoritmo anterior se le agregará un contador de productos y algunos condicionales
 
+
+  // prueba de que funcionan las features agregadas a la parte 1:
+
+    cout << results[0] << " " << results[1] << endl;
+
+  // una vez deducido que cliente es el que tiene más cantidad de "grandes entregas", se buscaran únicamente sus datos en la matriz de datos
 
 
    //__________PARTE 2__________
