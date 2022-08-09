@@ -181,12 +181,6 @@ int main(){
     cout << endl;
     cout << "Listado de Km recorridos por tipo de producto (ascendente):" << endl;
 
-    //la matriz dist funciona correctamente (abajo código que la prueba)
-    /*
-    for (int i = 0 ; i < 5 ; i++){
-        cout << dist[1][i] << endl;
-    }
-    */
     // nuevamente, se puede aprovechar el código de la parte 1: el recorrido de la matriz de datos se da en el formato producto a producto,
     // cliente a cliente, por lo que se puede armar una nueva matriz en la que las filas correspondan a los clientes y las columnas a las distancias
     // que se recorren en las entregas de cada producto, haciendo que en esta sección se encargue de parsear la fila indicada por results[0]
@@ -222,21 +216,25 @@ int main(){
     // este algoritmo funciona casi bien: los códigos de cada producto son correctos, pero el ordenamiento confunde dos posiciones
     float aux;
     int indaux;
-    for (int i = 0; i < 5 ; i++){
-        if(dist[results[0]][i] > dist[results[0]][i + 1]){
-            aux = dist[results[0]][i];
-            indaux = ind[i];
-            ind[i] = ind[i + 1];
-            ind[i + 1] = indaux;
-            dist[results[0]][i] = dist[results[0]][i + 1];
-            dist[results[0]][i + 1] = aux;
+    for (int i = 0 ; i < 5 ; i++){
 
+        for(int j = i + 1 ; j < 5 ; j++){
+            if(dist[results[0]][i] > dist[results[0]][j]){
+                aux = dist[results[0]][i];
+                indaux = ind[i];
+                ind[i] = ind[j];
+                ind[j] = indaux;
+                dist[results[0]][i] = dist[results[0]][j];
+                dist[results[0]][j] = aux;
+            }
         }
+
     }
 
 
     for (int i = 0 ; i < 5 ; i++){
         cout << nombres[ind[i] + 8] << ": " << dist[results[0]][i] << endl;
+        //cout << dist[results[0]][i] << endl;
     }
 
 
