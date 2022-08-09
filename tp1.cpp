@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
+// ESTE CODIGO FUNCIONA. ES ESPANTOSO, PERO FUNCIONA Y SE PODRÍA ENTREGAR PARA EL TP
+
+
 /*
 
 Posibles features para un futuro (suponiendo de que sean legales):
